@@ -1,0 +1,2 @@
+0 0 * * * find /var/www/temp_images/* -type f -mtime +1 -exec rm {} \;
+0 0 * * * find /var/www/myppt/* -type f -mtime +1 -exec rm {} \;

@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "./static/css/main.bca771a8.css",
+    "main.js": "./static/js/main.bf766c71.js",
+    "runtime.js": "./static/js/runtime.3cfbd1c9.js",
+    "base.js": "./static/js/base.6c06095e.js",
+    "antd.js": "./static/js/antd.9485c027.js",
+    "moment.js": "./static/js/moment.0a12602d.js",
+    "vendors.js": "./static/js/vendors.0d866e34.js",
+    "index.html": "./index.html",
+    "static/media/index.cjs": "./static/media/index.433019db0fc741f26829.cjs"
+  },
+  "entrypoints": [
+    "static/js/runtime.3cfbd1c9.js",
+    "static/js/base.6c06095e.js",
+    "static/js/antd.9485c027.js",
+    "static/js/moment.0a12602d.js",
+    "static/js/vendors.0d866e34.js",
+    "static/css/main.bca771a8.css",
+    "static/js/main.bf766c71.js"
+  ]
+}
