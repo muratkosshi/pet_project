@@ -30,7 +30,7 @@ from fastapi.security import HTTPBearer
 
 auth_scheme = HTTPBearer()
 # Настройки
-SECRET_KEY = "qtifU9T_YVnt-fNuGfMenZwLS5ha8qLLBMRciu0XPwGWoNwxHqxMOwduOrd1W6bNRAoQxJl5AAYQlC6QEzkusg"
+SECRET_KEY = "qtifU9T_YVnt-fNuGfMdhhdhdjdjdjxbcjfjjfjemdenZwLS5ha8qLLBMRciu0XPwGWoNwxHqxMOwduOrd1W6bNRAoQxJl5AAYQlC6QEzkusg"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 JWT_AUDIENCE = "http://localhost:6565/"
