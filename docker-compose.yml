@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      - filestash
+
+  rabbitmq:  # ✅ Добавили RabbitMQ
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # AMQP порт
+      - "15672:15672"  # Панель управления
+    networks:
+      - filestash
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  db:
+    image: postgres:latest
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    networks:
+      filestash:
+        ipv4_address: 192.168.1.100
+
+
+
+  web:
+    build: ./
+    ports:
+      - "6565:80"
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/
+      - ./venv:/var/www/venv
+    depends_on:
+      - redis
+      - db
+      - rabbitmq  # ✅ Добавили зависимость от RabbitMQ
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - RABBITMQ_URL=amqp://rabbitmq  # ✅ Добавили переменную для RabbitMQ
+    container_name: fast_api
+    networks:
+      filestash:
+        ipv4_address: 192.168.1.101
+    command: >
+      sh -c "alembic upgrade head && 
+             uvicorn main:app --host 0.0.0.0 --port 80 --reload --forwarded-allow-ips='*' & 
+             celery -A app.core.celery.celery worker --loglevel=info --detach && 
+             watchmedo auto-restart --recursive --pattern="*.py" --directory="app/core/celery" --directory="app/core" -- celery -A app.core.celery.celery worker --loglevel=info"
+
+networks:
+  filestash:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+volumes:
+  postgres_data:
+  venv:
